@@ -8,15 +8,15 @@
         <Label x:Name="lblBulls" Content="" HorizontalAlignment="Left" Margin="105,194,0,0" VerticalAlignment="Top"/>
         <Button x:Name="btnTry" Content="Try" HorizontalAlignment="Left" Margin="37,136,0,0" VerticalAlignment="Top" Width="122" Height="34" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="18" Background="#FFDA3728" Click="btnTry_Click"/>
         <Label Content="Bulls and cows" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="152,10,0,0" Height="50" Width="225" FontSize="27" FontWeight="Bold" FontFamily="SketchFlow Print"/>
-        <Image x:Name="bull" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="200,65,0,0" Source="Resources/bull.png" Stretch="UniformToFill"/>
-        <Image x:Name="cow" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="201,125,0,0" Source="Resources/cow.png"/>
+        <Image x:Name="bull" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="200,65,0,0" Stretch="UniformToFill"/>
+        <Image x:Name="cow" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="201,125,0,0"/>
         <Image HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="356,75,0,0"/>
-        <Image x:Name="bull2" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="268,65,0,0" Source="Resources/bull.png" Stretch="UniformToFill"/>
-        <Image x:Name="bull3" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="339,65,0,0" Source="Resources/bull.png" Stretch="UniformToFill"/>
-        <Image x:Name="bull4" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="408,65,0,0" Source="Resources/bull.png" Stretch="UniformToFill"/>
-        <Image x:Name="cow2" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="268,125,0,0" Source="Resources/cow.png"/>
-        <Image x:Name="cow3" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="339,125,0,0" Source="Resources/cow.png"/>
-        <Image x:Name="cow4" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="409,125,0,0" Source="Resources/cow.png"/>
+        <Image x:Name="bull2" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="268,65,0,0" Stretch="UniformToFill"/>
+        <Image x:Name="bull3" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="339,65,0,0" Stretch="UniformToFill"/>
+        <Image x:Name="bull4" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="408,65,0,0" Stretch="UniformToFill"/>
+        <Image x:Name="cow2" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="268,125,0,0"/>
+        <Image x:Name="cow3" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="339,125,0,0"/>
+        <Image x:Name="cow4" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="409,125,0,0"/>
         <ListBox Margin="37,227,55,19"/>
         <Label Content="History" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="215,194,0,0" Height="28" Width="89" FontSize="20" FontWeight="Bold" FontFamily="SketchFlow Print"/>
 

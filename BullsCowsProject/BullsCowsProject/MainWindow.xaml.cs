@@ -21,6 +21,7 @@ namespace BullsCowsProject
     public partial class MainWindow : Window
     {
         static int[] number = new int[4];
+
         public MainWindow()
         {
             //InitializeComponent();
@@ -53,7 +54,15 @@ namespace BullsCowsProject
         }
         void btnTry_Click(object sender, RoutedEventArgs e)
         {
+
+            Image[] imgArray = new Image[] { bull, bull2, bull3, bull4, cow, cow2, cow3, cow4 };
+            for (int i = 0; i < imgArray.Length; i++)
+            {
+
+                imgArray[i].Source = null;
+            }
             GetValueFromTextBox();
+
         }
 
         void GetValueFromTextBox()
@@ -71,7 +80,7 @@ namespace BullsCowsProject
             {
                 if (number.Contains(playerDigits[i]))
                 {
-                    if(number[i]==playerDigits[i])
+                    if (number[i] == playerDigits[i])
                     {
                         bulls++;
                     }
@@ -80,6 +89,28 @@ namespace BullsCowsProject
                         cows++;
                     }
                 }
+            }
+            DrawCows(cows);
+            DrawBulls(bulls);
+        }
+
+        void DrawBulls(int bulls)
+        {
+            Image[] imgArray = new Image[] { bull, bull2, bull3, bull4 };
+            for (int i = 0; i < bulls; i++)
+            {
+                var uri = new Uri("pack://application:,,,/Resources/bull.png");
+                imgArray[i].Source = new BitmapImage(uri);
+            }
+        }
+
+        void DrawCows(int cows)
+        {
+            Image[] imgArray = new Image[] { cow, cow2, cow3, cow4 };
+            for (int i = 0; i < cows; i++)
+            {
+                var uri = new Uri("pack://application:,,,/Resources/cow.png");
+                imgArray[i].Source = new BitmapImage(uri);
             }
         }
     }
