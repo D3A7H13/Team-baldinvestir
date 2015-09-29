@@ -20,6 +20,7 @@ namespace BullsCowsProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        static int[] number = new int[4];
         public MainWindow()
         {
             //InitializeComponent();
@@ -27,7 +28,37 @@ namespace BullsCowsProject
         }
         private void MyWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Generating the random number
+            GenerateNumber();
+        }
+
+        void GenerateNumber()
+        {
+            for (int i = 0; i < number.Length; i++)
+            {
+                number[i] = GenerateRandomDigit();
+
+            }
+        }
+
+        private int GenerateRandomDigit()
+        {
+            Random randomizer = new Random();
+            int digit;
+            do
+            {
+                digit = randomizer.Next(1, 9);
+
+            } while (number.Contains(digit));
+            return digit;
+        }
+
+        private void IsDifferent(int[] diffNum, int generateWindow)
+        {
+
+        }
+        private void btnTry_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
