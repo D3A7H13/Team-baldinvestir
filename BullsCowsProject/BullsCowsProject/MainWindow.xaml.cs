@@ -51,14 +51,21 @@ namespace BullsCowsProject
             } while (number.Contains(digit));
             return digit;
         }
-
-        private void IsDifferent(int[] diffNum, int generateWindow)
+        void btnTry_Click(object sender, RoutedEventArgs e)
         {
-
+            GetValueFromTextBox();
         }
-        private void btnTry_Click(object sender, RoutedEventArgs e)
-        {
 
+        void GetValueFromTextBox()
+        {
+            string playerNumber = txtInput.Text;
+            int[] playerDigits = playerNumber.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
+            FindBullsCows(playerDigits);
+        }
+
+        void FindBullsCows(int[] playerDigits)
+        {
+            
         }
     }
 }
