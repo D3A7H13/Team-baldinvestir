@@ -4,8 +4,8 @@
         Title="MainWindow" Height="363" Width="525">
     <Grid Background="#FF20C5CD" Margin="0,0,2,-9">
         <TextBox x:Name="txtInput" HorizontalAlignment="Left" Height="41" Margin="37,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122"/>
-        <Label x:Name="lblCows" Content="" HorizontalAlignment="Left" Margin="115,104,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lblBulls" Content="" HorizontalAlignment="Left" Margin="115,144,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblCows" Content="" HorizontalAlignment="Left" Margin="37,194,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblBulls" Content="" HorizontalAlignment="Left" Margin="105,194,0,0" VerticalAlignment="Top"/>
         <Button x:Name="btnTry" Content="Try" HorizontalAlignment="Left" Margin="37,136,0,0" VerticalAlignment="Top" Width="122" Height="34" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="18" Background="#FFDA3728"/>
         <Label Content="Bulls and cows" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="152,10,0,0" Height="50" Width="225" FontSize="27" FontWeight="Bold" FontFamily="SketchFlow Print"/>
         <Image HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="200,65,0,0" Source="Resources/bull.png" Stretch="UniformToFill"/>
