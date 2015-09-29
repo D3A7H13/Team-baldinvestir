@@ -22,7 +22,12 @@ namespace BullsCowsProject
     {
         public MainWindow()
         {
-            InitializeComponent();
+            //InitializeComponent();
+            Loaded += MyWindow_Loaded;
+        }
+        private void MyWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Generating the random number
         }
     }
 }
