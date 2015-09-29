@@ -8,7 +8,7 @@
         <Label x:Name="lblBulls" Content="" HorizontalAlignment="Left" Margin="115,144,0,0" VerticalAlignment="Top"/>
         <Button x:Name="btnTry" Content="Try" HorizontalAlignment="Left" Margin="37,155,0,0" VerticalAlignment="Top" Width="107" Height="34"/>
         <Label Content="Bulls and cows" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="152,10,0,0" Height="50" Width="225" FontSize="27" FontWeight="Bold" FontFamily="SketchFlow Print"/>
-        <Image HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="200,65,0,0" Source="Resources/bull.jpg" Stretch="UniformToFill"/>
+        <Image HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="200,65,0,0" Source="Resources/bull.png" Stretch="UniformToFill"/>
         <Image HorizontalAlignment="Left" Height="70" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="201,125,0,0" Source="Resources/cow.png"/>
         <Image HorizontalAlignment="Left" Height="44" VerticalAlignment="Top" Width="52" RenderTransformOrigin="1.24,0.88" Margin="356,75,0,0"/>
 
