@@ -65,7 +65,22 @@ namespace BullsCowsProject
 
         void FindBullsCows(int[] playerDigits)
         {
-            
+            int bulls = 0;
+            int cows = 0;
+            for (int i = 0; i < playerDigits.Length; i++)
+            {
+                if (number.Contains(playerDigits[i]))
+                {
+                    if(number[i]==playerDigits[i])
+                    {
+                        bulls++;
+                    }
+                    else
+                    {
+                        cows++;
+                    }
+                }
+            }
         }
     }
 }
