@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BullsCowsProject
 {
@@ -24,11 +16,12 @@ namespace BullsCowsProject
 
         public MainWindow()
         {
-            //InitializeComponent();
+            InitializeComponent();
             Loaded += MyWindow_Loaded;
         }
         private void MyWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            inputTextBox.MaxLength = 4;
             GenerateNumber();
         }
 
@@ -37,7 +30,26 @@ namespace BullsCowsProject
             for (int i = 0; i < number.Length; i++)
             {
                 number[i] = GenerateRandomDigit();
+            }
+        }
 
+        private void inputTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            CheckIsNumeric(e);
+        }
+
+        private void inputTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            e.CancelCommand();
+        }
+
+        private void CheckIsNumeric(TextCompositionEventArgs e)
+        {
+            int result;
+
+            if (!(int.TryParse(e.Text, out result)))
+            {
+                e.Handled = true;
             }
         }
 
@@ -49,26 +61,29 @@ namespace BullsCowsProject
             {
                 digit = randomizer.Next(1, 9);
 
-            } while (number.Contains(digit));
+            }
+            while (number.Contains(digit));
+
             return digit;
         }
-        void btnTry_Click(object sender, RoutedEventArgs e)
+
+        void checkButton_Click(object sender, RoutedEventArgs e)
         {
 
             Image[] imgArray = new Image[] { bull, bull2, bull3, bull4, cow, cow2, cow3, cow4 };
             for (int i = 0; i < imgArray.Length; i++)
             {
-
                 imgArray[i].Source = null;
             }
-            GetValueFromTextBox();
 
+            GetValueFromTextBox();
         }
 
         void GetValueFromTextBox()
         {
-            string playerNumber = txtInput.Text;
+            string playerNumber = inputTextBox.Text;
             int[] playerDigits = playerNumber.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
+
             FindBullsCows(playerDigits);
         }
 
@@ -90,8 +105,35 @@ namespace BullsCowsProject
                     }
                 }
             }
+
+
             DrawCows(cows);
             DrawBulls(bulls);
+            AddHistory(string.Join("", playerDigits), bulls, cows);
+
+            if (bulls == 4)
+            {
+                VictoryScreen victory = new VictoryScreen();
+                victory.setCreatingForm = this;
+                this.IsEnabled = false;
+                victory.Show();
+            }
+
+        }
+
+        private void AddHistory(string playerNumber, int bulls, int cows)
+        {
+            ListBoxItem history = new ListBoxItem();
+            if (bulls == 4)
+            {
+                history.Content = "The number was " + playerNumber + ". You won!";
+            }
+            else
+            {
+                history.Content = "In " + playerNumber + " there are " + bulls + " bulls and " + cows + " cows";
+            }
+
+            historyListBox.Items.Insert(0, history);
         }
 
         void DrawBulls(int bulls)
