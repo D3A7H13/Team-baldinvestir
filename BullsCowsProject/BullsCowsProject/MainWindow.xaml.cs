@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace BullsCowsProject
 {
@@ -31,6 +35,7 @@ namespace BullsCowsProject
             {
                 number[i] = GenerateRandomDigit();
             }
+            randomNumLabel.Content = string.Join("", number);
         }
 
         private void inputTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -154,6 +159,59 @@ namespace BullsCowsProject
                 var uri = new Uri("pack://application:,,,/Resources/cow.png");
                 imgArray[i].Source = new BitmapImage(uri);
             }
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            /*DoubleAnimation ne = new DoubleAnimation();
+            ne.From = 0;
+            ne.To = 40;
+            ne.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            ne.RepeatBehavior = new RepeatBehavior(1);
+            ne.AutoReverse = true;
+            TranslateTransform tt = new TranslateTransform();
+            checkButton.RenderTransform = tt;
+            tt.BeginAnimation(TranslateTransform.YProperty, ne);
+            */
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+            
+            dispatcherTimer.Start();
+
+    }
+
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            (sender as DispatcherTimer).Stop();
+
+            DoubleAnimation da = new DoubleAnimation();
+            da.From = 0;
+            da.To = 360;
+            da.AutoReverse = false;
+            da.Duration = new Duration(TimeSpan.FromSeconds(5.000));
+            da.RepeatBehavior = RepeatBehavior.Forever;
+            DoubleAnimation ne = new DoubleAnimation();
+            ne.From = 0;
+            ne.To = 100;
+            ne.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            ne.RepeatBehavior = RepeatBehavior.Forever;
+            ne.AutoReverse = true;
+            TranslateTransform tt = new TranslateTransform();
+            
+            
+            RotateTransform rt = new RotateTransform();
+            TransformGroup tg = new TransformGroup();
+            tg.Children.Add(rt);
+            tg.Children.Add(tt);
+            
+            lblHello.RenderTransform = tg;
+
+            rt.BeginAnimation(RotateTransform.AngleProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, ne);
+            //tg.BeginAnimation(RotateTransform.AngleProperty, da);
+            //tg.BeginAnimation(TranslateTransform.YProperty, ne);
         }
     }
 }
