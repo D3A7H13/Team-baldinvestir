@@ -30,5 +30,7 @@
         <Label x:Name="HistoryLabel" Content="History" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="215,194,0,0" Height="28" Width="89" FontSize="20" FontWeight="Bold" FontFamily="SketchFlow Print" MouseDown="button_Click"/>
         <Label x:Name="randomNumLabel" Content="Label" HorizontalAlignment="Left" Margin="121,140,0,0" VerticalAlignment="Top" Panel.ZIndex="0"/>
 
+        <Button Content="Help" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="37,10,0,0" Height="27" RenderTransformOrigin="0.521,0.712" FontSize="14" Click="Button_Click_1"/>
+
     </Grid>
 </Window>
