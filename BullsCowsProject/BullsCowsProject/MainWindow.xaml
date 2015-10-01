@@ -19,6 +19,7 @@
         <Image x:Name="cow4" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.24,0.88" Margin="409,125,0,0"/>
         <ListBox x:Name="historyListBox" Margin="37,227,0,19" HorizontalAlignment="Left" Width="423"/>
         <Label Content="History" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="215,194,0,0" Height="28" Width="89" FontSize="20" FontWeight="Bold" FontFamily="SketchFlow Print"/>
+        <Button Content="Help" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="37,10,0,0" Height="27" RenderTransformOrigin="0.521,0.712" FontSize="14" Click="Button_Click_1"/>
 
     </Grid>
 </Window>

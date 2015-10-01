@@ -77,6 +77,7 @@ namespace BullsCowsProject
             }
 
             GetValueFromTextBox();
+            inputTextBox.Clear();
         }
 
         void GetValueFromTextBox()
@@ -154,6 +155,15 @@ namespace BullsCowsProject
                 var uri = new Uri("pack://application:,,,/Resources/cow.png");
                 imgArray[i].Source = new BitmapImage(uri);
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //var helpform = new Help();
+            //helpform.Activate();
+
+            Help OP = new Help();
+            OP.Show();
         }
     }
 }
