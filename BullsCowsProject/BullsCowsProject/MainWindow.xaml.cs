@@ -458,6 +458,7 @@ namespace BullsCowsProject
             TranslateTransform tt = new TranslateTransform();
             historyListBox.RenderTransform = tt;
             tt.BeginAnimation(TranslateTransform.YProperty, da);
+        }
 			
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
