@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BullsCowsProject"
         mc:Ignorable="d"
-        Title="VictoryScreen" Height="151.579" Width="220.263" ResizeMode="NoResize" Icon="Resources/icon.png">
+        Title="VictoryScreen" Height="151.579" Width="363.369" ResizeMode="NoResize" Icon="Resources/icon.png">
     <Grid Background="#FF20C5CD">
         <Label x:Name="label" Content="Victory" HorizontalAlignment="Left" Margin="14,12,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="SketchFlow Print" FontWeight="Bold"/>
         <Button x:Name="newGameButton" Content="New Game" HorizontalAlignment="Left" Margin="14,83,0,0" VerticalAlignment="Top" Width="85" Height="20" Click="newGameButton_Click" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="12" Background="#FFDA3728"/>
         <Button x:Name="exitButton" Content="Exit" HorizontalAlignment="Left" Margin="112,83,0,0" VerticalAlignment="Top" Width="85" Height="20" Click="exitButton_Click" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="12" Background="#FFDA3728"/>
+        <Image x:Name="MedalImage" HorizontalAlignment="Left" Height="89" Margin="231,14,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>

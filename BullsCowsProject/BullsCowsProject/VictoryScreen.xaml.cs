@@ -20,11 +20,41 @@ namespace BullsCowsProject
     public partial class VictoryScreen : Window
     {
         internal MainWindow creatingForm;
-        
+        public int moves;
+
         public VictoryScreen()
         {
             InitializeComponent();
         }
+
+        public VictoryScreen(int moves)
+        {
+            this.moves = moves;
+            InitializeComponent();
+            SetMedal();
+        }
+
+        private void SetMedal()
+        {
+            if (moves > 1 && moves <= 5)
+            {
+                var uri = new Uri("pack://application:,,,/Resources/gold.png");
+                MedalImage.Source = new BitmapImage(uri);
+            }
+            else if (moves > 5 && moves <= 10)
+            {
+                var uri = new Uri("pack://application:,,,/Resources/silver.png");
+                MedalImage.Source = new BitmapImage(uri);
+            }
+            else 
+            {
+                var uri = new Uri("pack://application:,,,/Resources/bronze.png");
+                MedalImage.Source = new BitmapImage(uri);
+            }
+        }
+
+
+
         //setting the parent window that we can control from this window
         public MainWindow setCreatingForm
         {
