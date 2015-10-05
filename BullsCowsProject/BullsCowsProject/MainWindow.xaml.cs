@@ -90,11 +90,7 @@ namespace BullsCowsProject
         {
             string playerNumber = inputTextBox.Text;
             int[] playerDigits = playerNumber.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
-            ListBoxItem history = new ListBoxItem();
-            if (playerDigits.Length != 4)
-            {
-                history.Content = ("Invalid number. The number must be four digits.");
-            }
+
             FindBullsCows(playerDigits);
         }
 
@@ -169,9 +165,6 @@ namespace BullsCowsProject
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //var helpform = new Help();
-            //helpform.Activate();
-
             Help OP = new Help();
             OP.Show();
         }
