@@ -74,15 +74,21 @@ namespace BullsCowsProject
 
         void checkButton_Click(object sender, RoutedEventArgs e)
         {
-
-            Image[] imgArray = new Image[] { bull, bull2, bull3, bull4, cow, cow2, cow3, cow4 };
-            for (int i = 0; i < imgArray.Length; i++)
+            if (inputTextBox.Text.Length != 4)
             {
-                imgArray[i].Source = null;
+                MessageBox.Show("The input must be 4 digits");
             }
+            else
+            {
+                Image[] imgArray = new Image[] { bull, bull2, bull3, bull4, cow, cow2, cow3, cow4 };
+                for (int i = 0; i < imgArray.Length; i++)
+                {
+                    imgArray[i].Source = null;
+                }
 
-            GetValueFromTextBox();
-            inputTextBox.Clear();
+                GetValueFromTextBox();
+                inputTextBox.Clear();
+            }
         }
 
         void GetValueFromTextBox()
@@ -462,9 +468,6 @@ namespace BullsCowsProject
 			
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //var helpform = new Help();
-            //helpform.Activate();
-
             Help OP = new Help();
             OP.Show();
         }
