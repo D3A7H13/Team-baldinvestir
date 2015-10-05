@@ -16,6 +16,7 @@ namespace BullsCowsProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static int moves = 0;
         static int[] number = new int[4];
 
         public MainWindow()
@@ -65,7 +66,6 @@ namespace BullsCowsProject
             do
             {
                 digit = randomizer.Next(1, 9);
-
             }
             while (number.Contains(digit));
 
@@ -117,7 +117,7 @@ namespace BullsCowsProject
                     }
                 }
             }
-
+            moves++;
 
             DrawCows(cows);
             DrawBulls(bulls);
@@ -125,7 +125,7 @@ namespace BullsCowsProject
 
             if (bulls == 4)
             {
-                VictoryScreen victory = new VictoryScreen();
+                VictoryScreen victory = new VictoryScreen(moves);
                 victory.setCreatingForm = this;
                 this.IsEnabled = false;
                 victory.Show();
