@@ -2,11 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		
-        Title="Help" Height="327.404" Width="537.981" Icon="Resources/icon.png">
+        Title="Help" Height="327.404" Width="537.981" Icon="Resources/icon.png" ResizeMode="CanMinimize">
     <Grid Margin="0,0,2,0" Background="#FF20C5CD">
         <Label x:Name="RulesLabel" Content="Rules" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="227,10,0,0" Height="50" Width="85" FontSize="27" FontWeight="Bold" FontFamily="SketchFlow Print" MouseDown="RulesLabel_Activate"/>
         <Label Content="Bulls and Cows Game is also known as MasterMind.&#xD;&#xA;Computer selects a four digit number, all four digits&#xD;&#xA;are different. In current implementation number&#xD;&#xA;may not contain 0. Cows pictures displays total&#xD;&#xA;number of digits you guessed right - &quot;Cow&quot;, Bulls&#xD;&#xA;pictures show how many of those that exists were&#xD;&#xA;placed at the right spots - &quot;Bull&quot;.&#xD;&#xA;&#xD;&#xA;Play by entering your guess in the boxs and click&#xD;&#xA; &quot;Try&quot; to validate your entry.  You may also &#xD;&#xA;check your previous guesses in the history box.&#xD;&#xA;Good luck :)) " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,46,0,0" Height="240" Width="508" FontSize="18" FontWeight="Bold" FontFamily="SketchFlow Print"/>
-        <TextBox x:Name="DevBox" HorizontalAlignment="Left" Margin="-169,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="DevBox_PreviewTextInput" Panel.ZIndex="-5"/>
+        <TextBox x:Name="DevBox" HorizontalAlignment="Left" Margin="38,449,0,-169.4" TextWrapping="Wrap" VerticalAlignment="Top" PreviewKeyDown="DevBox_PreviewKeyDown" Panel.ZIndex="-5"/>
         <Image x:Name="MarkImage" HorizontalAlignment="Left" Height="15" Margin="220,24,0,0" VerticalAlignment="Top" Width="98" Stretch="Fill"/>
 
     </Grid>

@@ -44,26 +44,31 @@ namespace BullsCowsProject
             IsUnique(e);
         }
 
-        private void IsUnique(TextCompositionEventArgs e)
+        private void inputTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Text == "\r")
+            if (e.Key == Key.Enter)
             {
                 ButtonAutomationPeer peer = new ButtonAutomationPeer(checkButton);
                 IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
                 invokeProv.Invoke();
             }
-            else
+            else if (e.Key == Key.Space)
             {
-                int input;
-                if (int.TryParse(e.Text, out input))
+                e.Handled = true;
+            }
+        }
+
+        private void IsUnique(TextCompositionEventArgs e)
+        {
+            int input;
+            if (int.TryParse(e.Text, out input))
+            {
+                int[] previousInput = inputTextBox.Text.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
+                for (int i = 0; i < previousInput.Length; i++)
                 {
-                    int[] previousInput = inputTextBox.Text.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
-                    for (int i = 0; i < previousInput.Length; i++)
+                    if (input == previousInput[i])
                     {
-                        if (input == previousInput[i])
-                        {
-                            e.Handled = true;
-                        }
+                        e.Handled = true;
                     }
                 }
             }
@@ -154,7 +159,7 @@ namespace BullsCowsProject
                 VictoryScreen victory = new VictoryScreen(moves);
                 victory.setCreatingForm = this;
                 this.IsEnabled = false;
-                victory.Show();
+                victory.ShowDialog();
             }
 
         }
@@ -196,9 +201,9 @@ namespace BullsCowsProject
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            Help OP = new Help();
-            OP.setCreatingForm = this;
-            OP.Show();
+            Help helpWindow = new Help();
+            helpWindow.setCreatingForm = this;
+            helpWindow.ShowDialog();
         }
 
         //Animations Code
@@ -707,7 +712,7 @@ namespace BullsCowsProject
         private void secondAnimationInputBoxStart(object sender, EventArgs e)
         {
             (sender as DispatcherTimer).Stop();
-            
+
             double oldLeft = inputTextBox.Margin.Left;
             double oldRight = inputTextBox.Margin.Right;
             double oldTop = inputTextBox.Margin.Top;
@@ -797,6 +802,5 @@ namespace BullsCowsProject
             historyListBox.RenderTransform = tt;
             tt.BeginAnimation(TranslateTransform.YProperty, da);
         }
-
     }
 }

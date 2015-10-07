@@ -4,7 +4,7 @@
         Title="Bulls and Cows Game" Height="363" Width="500.789" ResizeMode="CanMinimize" Icon="Resources/icon.png">
 
     <Grid Background="#FF20C5CD" Margin="0,0,-6,-2">
-        <TextBox x:Name="inputTextBox" HorizontalAlignment="Left" Height="41" Margin="37,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" ToolTip="Your input" PreviewTextInput="inputTextBox_PreviewTextInput" DataObject.Pasting="inputTextBox_TextBoxPasting" RenderTransformOrigin="0.839,1.006"/>
+        <TextBox x:Name="inputTextBox" HorizontalAlignment="Left" Height="41" Margin="37,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" ToolTip="Your input" PreviewKeyDown="inputTextBox_PreviewKeyDown" PreviewTextInput="inputTextBox_PreviewTextInput" DataObject.Pasting="inputTextBox_TextBoxPasting" RenderTransformOrigin="0.839,1.006"/>
         <Button x:Name="checkButton" Content="Try" HorizontalAlignment="Left" Margin="37,136,0,0" VerticalAlignment="Top" Width="122" Height="34" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="18" Background="#FFDA3728" Click="checkButton_Click" Panel.ZIndex="1"/>
         <Label x:Name="TitleLabel" Content="Bulls and cows" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="138,10,0,0" Height="50" Width="225" FontSize="27" FontWeight="Bold" FontFamily="SketchFlow Print" RenderTransformOrigin="0.5,0.5"/>
         <Image x:Name="bull" HorizontalAlignment="Left" Height="55" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.5,1" Margin="200,65,0,0" Stretch="UniformToFill" Source="Resources/bull.png"/>

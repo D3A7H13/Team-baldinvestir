@@ -20,19 +20,19 @@ namespace BullsCowsProject
             InitializeComponent();
         }
 
-        private void DevBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void DevBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Text == "\r")
+            if (e.Key == Key.Enter)
             {
-                if (DevBox.Text == "devmode.enabled")
+                if (DevBox.Text == "devmode")
                 {
+                    DialogResult = true;
+                    this.Close();
                     creatingForm.TimerStart();
                     creatingForm.inputTextBox.Focus();
-                    this.Close();
                 }
             }
         }
-
         private void RulesLabel_Activate(object sender, MouseButtonEventArgs e)
         {
             var uri = new Uri("pack://application:,,,/Resources/mark.png");
