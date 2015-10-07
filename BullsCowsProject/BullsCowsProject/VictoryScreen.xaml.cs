@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BullsCowsProject
 {
-    /// <summary>
-    /// Interaction logic for VictoryScreen.xaml
-    /// </summary>
+
     public partial class VictoryScreen : Window
     {
         internal MainWindow creatingForm;
@@ -36,21 +24,20 @@ namespace BullsCowsProject
 
         private void SetMedal()
         {
-            if (moves > 1 && moves <= 5)
+            var uri = new Uri("pack://application:,,,/Resources/bronze.png");
+            if (moves == 1)
             {
-                var uri = new Uri("pack://application:,,,/Resources/gold.png");
-                MedalImage.Source = new BitmapImage(uri);
+                uri = new Uri("pack://application:,,,/Resources/lucky.png");
+            }
+            else if (moves > 1 && moves <= 5)
+            {
+                uri = new Uri("pack://application:,,,/Resources/gold.png");
             }
             else if (moves > 5 && moves <= 10)
             {
-                var uri = new Uri("pack://application:,,,/Resources/silver.png");
-                MedalImage.Source = new BitmapImage(uri);
+                uri = new Uri("pack://application:,,,/Resources/silver.png");
             }
-            else 
-            {
-                var uri = new Uri("pack://application:,,,/Resources/bronze.png");
-                MedalImage.Source = new BitmapImage(uri);
-            }
+            MedalImage.Source = new BitmapImage(uri);
         }
 
 

@@ -1,27 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BullsCowsProject
 {
-    /// <summary>
-    /// Interaction logic for Help.xaml
-    /// </summary>
     public partial class Help : Window
     {
+        internal MainWindow creatingForm;
+
+        public MainWindow setCreatingForm
+        {
+            get { return creatingForm; }
+            set { creatingForm = value; }
+        }
+
         public Help()
         {
             InitializeComponent();
+        }
+
+        private void DevBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text == "\r")
+            {
+                if (DevBox.Text == "devmode.enabled")
+                {
+                    creatingForm.TimerStart();
+                    creatingForm.inputTextBox.Focus();
+                    this.Close();
+                }
+            }
+        }
+
+        private void RulesLabel_Activate(object sender, MouseButtonEventArgs e)
+        {
+            var uri = new Uri("pack://application:,,,/Resources/mark.png");
+            MarkImage.Source = new BitmapImage(uri);
+            DevBox.Focus();
         }
     }
 }
