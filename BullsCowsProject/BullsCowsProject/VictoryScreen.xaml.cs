@@ -51,6 +51,7 @@ namespace BullsCowsProject
                 var uri = new Uri("pack://application:,,,/Resources/bronze.png");
                 MedalImage.Source = new BitmapImage(uri);
             }
+            MovesLabel.Content = "In" + moves + " moves";
         }
 
 

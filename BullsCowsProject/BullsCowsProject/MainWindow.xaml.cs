@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Timers;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -11,9 +13,6 @@ using System.Windows.Threading;
 
 namespace BullsCowsProject
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public static int moves = 0;
@@ -42,6 +41,35 @@ namespace BullsCowsProject
         private void inputTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             CheckIsNumeric(e);
+            IsUnique(e);
+        }
+
+        private void IsUnique(TextCompositionEventArgs e)
+        {
+            if (e.Text == "\r")
+            {
+                ButtonAutomationPeer peer = new ButtonAutomationPeer(checkButton);
+                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                invokeProv.Invoke();
+            }
+            else
+            {
+                int input;
+                if (int.TryParse(e.Text, out input))
+                {
+                    int[] previousInput = inputTextBox.Text.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
+                    for (int i = 0; i < previousInput.Length; i++)
+                    {
+                        if (input == previousInput[i])
+                        {
+                            e.Handled = true;
+                        }
+
+                    }
+
+                }
+            }
+
         }
 
         private void inputTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
@@ -55,8 +83,10 @@ namespace BullsCowsProject
 
             if (!(int.TryParse(e.Text, out result)))
             {
+
                 e.Handled = true;
             }
+           
         }
 
         private int GenerateRandomDigit()
@@ -87,8 +117,8 @@ namespace BullsCowsProject
                 }
 
                 GetValueFromTextBox();
-                inputTextBox.Clear();
             }
+            inputTextBox.Clear();
         }
 
         void GetValueFromTextBox()
@@ -138,7 +168,7 @@ namespace BullsCowsProject
             ListBoxItem history = new ListBoxItem();
             if (bulls == 4)
             {
-                history.Content = "The number was " + playerNumber + ". You won!";
+                history.Content = ("The number was " + playerNumber + ". You won in " + moves + " moves!");
             }
             else
             {
@@ -173,10 +203,10 @@ namespace BullsCowsProject
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            
+
             dispatcherTimer.Start();
 
-    }
+        }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
@@ -227,7 +257,7 @@ namespace BullsCowsProject
             cow4.RenderTransform = tg;
             rt.BeginAnimation(RotateTransform.AngleProperty, rotate);
             tt.BeginAnimation(TranslateTransform.YProperty, da);
-           
+
         }
 
         private void AnimateForthCow()
@@ -383,7 +413,7 @@ namespace BullsCowsProject
             TranslateTransform tt = new TranslateTransform();
             inputTextBox.RenderTransform = tt;
             tt.BeginAnimation(TranslateTransform.YProperty, drop);
-            
+
 
             DispatcherTimer secondAnimationInputBox = new DispatcherTimer();
             secondAnimationInputBox.Tick += secondAnimationInputBoxStart;
@@ -465,7 +495,7 @@ namespace BullsCowsProject
             historyListBox.RenderTransform = tt;
             tt.BeginAnimation(TranslateTransform.YProperty, da);
         }
-			
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Help OP = new Help();
