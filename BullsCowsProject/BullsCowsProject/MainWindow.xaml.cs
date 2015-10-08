@@ -204,6 +204,7 @@ namespace BullsCowsProject
             Help helpWindow = new Help();
             helpWindow.setCreatingForm = this;
             helpWindow.ShowDialog();
+            HelpButton.IsEnabled = false;
         }
 
         //Animations Code
