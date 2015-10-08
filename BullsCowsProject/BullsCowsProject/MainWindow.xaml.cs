@@ -14,6 +14,7 @@ namespace BullsCowsProject
 {
     public partial class MainWindow : Window
     {
+        //declaring static variables to keep the random number and the moves taken
         public static int moves = 0;
         static int[] number = new int[4];
 
@@ -22,13 +23,17 @@ namespace BullsCowsProject
             InitializeComponent();
             Loaded += MyWindow_Loaded;
         }
+
+        //This method will will called when the main window is loaded
         private void MyWindow_Loaded(object sender, RoutedEventArgs e)
         {
             moves = 0;
             inputTextBox.MaxLength = 4;
             GenerateNumber();
+            inputTextBox.Focus();
         }
 
+        //This method generates the random number, with 4 different digits
         void GenerateNumber()
         {
             for (int i = 0; i < number.Length; i++)
@@ -38,58 +43,7 @@ namespace BullsCowsProject
             randomNumLabel.Content = string.Join("", number);
         }
 
-        private void inputTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            CheckIsNumeric(e);
-            IsUnique(e);
-        }
-
-        private void inputTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                ButtonAutomationPeer peer = new ButtonAutomationPeer(checkButton);
-                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
-                invokeProv.Invoke();
-            }
-            else if (e.Key == Key.Space)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void IsUnique(TextCompositionEventArgs e)
-        {
-            int input;
-            if (int.TryParse(e.Text, out input))
-            {
-                int[] previousInput = inputTextBox.Text.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
-                for (int i = 0; i < previousInput.Length; i++)
-                {
-                    if (input == previousInput[i])
-                    {
-                        e.Handled = true;
-                    }
-                }
-            }
-        }
-
-        private void inputTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
-        {
-            e.CancelCommand();
-        }
-
-        private void CheckIsNumeric(TextCompositionEventArgs e)
-        {
-            int result;
-
-            if (!(int.TryParse(e.Text, out result)))
-            {
-
-                e.Handled = true;
-            }
-        }
-
+        //Here we generate random digits until we get a digit that is not contained into the random number by now
         private int GenerateRandomDigit()
         {
             Random randomizer = new Random();
@@ -103,6 +57,75 @@ namespace BullsCowsProject
             return digit;
         }
 
+        //On every symbol that the user tries to give as an input we check for:
+        private void inputTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            //if the value that the user is trying to enter is numeric
+            IsNumeric(e);
+            //and is it unique
+            IsUnique(e);
+        }
+
+        private void IsNumeric(TextCompositionEventArgs e)
+        {
+            int result;
+
+            if (!(int.TryParse(e.Text, out result)))
+            {
+                e.Handled = true;
+            }
+            else if (int.TryParse(e.Text, out result))
+            {
+                if(result == 0)
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void IsUnique(TextCompositionEventArgs e)
+        {
+            int input;
+            if (int.TryParse(e.Text, out input))
+            {
+                int[] previousInput = inputTextBox.Text.ToCharArray().Select(d => Convert.ToInt32(d) - 48).ToArray();
+
+                //we check if the entered char exists in the textbox
+                if(previousInput.Contains(input))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        // This method will check every key that that the user presses on their keyboard. Similar to PreviewTextInput, but it catches special chars like " " as well.
+        private void inputTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // Exposes Button types to UI Automation.
+                ButtonAutomationPeer peer = new ButtonAutomationPeer(checkButton);
+
+                // IInvokeProvider Interface - Exposes methods and properties to support UI Automation client access to controls that initiate or perform a single, unambiguous action and do not maintain state when activated. 
+                IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+
+                // Invoke() - Sends a request to activate a control and initiate its single, unambiguous action.
+                invokeProv.Invoke();
+            }
+            else if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
+        
+        //Here we disable pasting
+        private void inputTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            e.CancelCommand();
+        }
+
+        
         void checkButton_Click(object sender, RoutedEventArgs e)
         {
             if (inputTextBox.Text.Length != 4)
@@ -111,6 +134,7 @@ namespace BullsCowsProject
             }
             else
             {
+                //We remove all images from the array with all bulls and cows placeholders
                 Image[] imgArray = new Image[] { bull, bull2, bull3, bull4, cow, cow2, cow3, cow4 };
                 for (int i = 0; i < imgArray.Length; i++)
                 {
@@ -130,14 +154,19 @@ namespace BullsCowsProject
             FindBullsCows(playerDigits);
         }
 
+        // Main part of the program 
         void FindBullsCows(int[] playerDigits)
         {
             int bulls = 0;
             int cows = 0;
+
+            // We are going to iterate through the user input
             for (int i = 0; i < playerDigits.Length; i++)
             {
+                // And check if the current digit is contained into the random number
                 if (number.Contains(playerDigits[i]))
                 {
+                    // If its contained, then we check if its in the same position as in the original number, and add bull or cow accordingly  
                     if (number[i] == playerDigits[i])
                     {
                         bulls++;
@@ -156,9 +185,11 @@ namespace BullsCowsProject
 
             if (bulls == 4)
             {
+                DrawCows(4);
+                // Here we create a new VictoryScreen window, we disable this one, and 
                 VictoryScreen victory = new VictoryScreen(moves);
-                victory.setCreatingForm = this;
-                this.IsEnabled = false;
+                victory.creatingForm = this;
+                // Then we are opening it as Dialog, which means that the current window will be disabled while the VictoryScreen is open
                 victory.ShowDialog();
             }
 
@@ -181,6 +212,7 @@ namespace BullsCowsProject
 
         void DrawBulls(int bulls)
         {
+            // We make Image array that contains our 4 Image objects that we are going to use for the bulls pictures
             Image[] imgArray = new Image[] { bull, bull2, bull3, bull4 };
             for (int i = 0; i < bulls; i++)
             {
@@ -199,25 +231,26 @@ namespace BullsCowsProject
             }
         }
 
+        // This method allows the help window to be used only once
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
             Help helpWindow = new Help();
-            helpWindow.setCreatingForm = this;
+            helpWindow.creatingForm = this;
             helpWindow.ShowDialog();
-            HelpButton.IsEnabled = false;
         }
 
-        //Animations Code
+        //Everything below is code for the animations
+
         public void TimerStart()
         {
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += TimerBeforeAnimations;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            dispatcherTimer.Tick += CallAnimations;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
 
             dispatcherTimer.Start();
         }
 
-        private void TimerBeforeAnimations(object sender, EventArgs e)
+        private void CallAnimations(object sender, EventArgs e)
         {
             (sender as DispatcherTimer).Stop();
             AnimateHistoryTab();
@@ -261,15 +294,15 @@ namespace BullsCowsProject
 
         private void AnimateHelp()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 120;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(1.750));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 120;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(1.750));
 
             TranslateTransform tt = new TranslateTransform();
             HelpButton.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationHelpButton = new DispatcherTimer();
             secondAnimationHelpButton.Tick += secondAnimationHelpButtonStart;
@@ -280,15 +313,15 @@ namespace BullsCowsProject
 
         private void AnimateTitle()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 115;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(1.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 115;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(1.500));
 
             TranslateTransform tt = new TranslateTransform();
             TitleLabel.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
         }
 
         private void ThirdAnimationForthBullStart(object sender, EventArgs e)
@@ -312,11 +345,11 @@ namespace BullsCowsProject
 
             RotateTransform rt = new RotateTransform();
 
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 7;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.250));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 7;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.250));
 
             TranslateTransform tt = new TranslateTransform();
 
@@ -327,7 +360,7 @@ namespace BullsCowsProject
             bull4.RenderTransform = tg;
 
             rt.BeginAnimation(RotateTransform.AngleProperty, rotate);
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
         }
 
         private void secondAnimationForthBullStart(object sender, EventArgs e)
@@ -349,11 +382,11 @@ namespace BullsCowsProject
 
             RotateTransform rt = new RotateTransform();
 
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 20;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 20;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
 
@@ -364,7 +397,7 @@ namespace BullsCowsProject
             bull4.RenderTransform = tg;
 
             rt.BeginAnimation(RotateTransform.AngleProperty, rotate);
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer ThirdAnimationForthBull = new DispatcherTimer();
             ThirdAnimationForthBull.Tick += ThirdAnimationForthBullStart;
@@ -375,15 +408,15 @@ namespace BullsCowsProject
 
         private void AnimateForthBull()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 85;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(1.200));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 85;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(1.200));
 
             TranslateTransform tt = new TranslateTransform();
             bull4.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationForthBull = new DispatcherTimer();
             secondAnimationForthBull.Tick += secondAnimationForthBullStart;
@@ -411,17 +444,17 @@ namespace BullsCowsProject
 
             RotateTransform rt = new RotateTransform();
 
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 18;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.750));
+            DoubleAnimation translateY = new DoubleAnimation();
+            translateY.From = 0;
+            translateY.To = 18;
+            translateY.AutoReverse = false;
+            translateY.Duration = new Duration(TimeSpan.FromSeconds(0.750));
 
-            DoubleAnimation da2 = new DoubleAnimation();
-            da2.From = 0;
-            da2.To = 30;
-            da2.AutoReverse = false;
-            da2.Duration = new Duration(TimeSpan.FromSeconds(0.750));
+            DoubleAnimation translateX = new DoubleAnimation();
+            translateX.From = 0;
+            translateX.To = 30;
+            translateX.AutoReverse = false;
+            translateX.Duration = new Duration(TimeSpan.FromSeconds(0.750));
 
             TranslateTransform tt = new TranslateTransform();
 
@@ -432,21 +465,21 @@ namespace BullsCowsProject
 
             bull3.RenderTransform = tg;
             rt.BeginAnimation(RotateTransform.AngleProperty, rotate);
-            tt.BeginAnimation(TranslateTransform.XProperty, da2);
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.XProperty, translateX);
+            tt.BeginAnimation(TranslateTransform.YProperty, translateY);
         }
 
         private void AnimateThirdBull()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 100;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(1.100));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 100;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(1.100));
 
             TranslateTransform tt = new TranslateTransform();
             bull3.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationThirdBull = new DispatcherTimer();
             secondAnimationThirdBull.Tick += secondAnimationThirdBullStart;
@@ -474,17 +507,17 @@ namespace BullsCowsProject
 
             RotateTransform rt = new RotateTransform();
 
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 20;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translateY = new DoubleAnimation();
+            translateY.From = 0;
+            translateY.To = 20;
+            translateY.AutoReverse = false;
+            translateY.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
-            DoubleAnimation da2 = new DoubleAnimation();
-            da2.From = 0;
-            da2.To = -8;
-            da2.AutoReverse = false;
-            da2.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation TranslateX = new DoubleAnimation();
+            TranslateX.From = 0;
+            TranslateX.To = -8;
+            TranslateX.AutoReverse = false;
+            TranslateX.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
 
@@ -495,21 +528,21 @@ namespace BullsCowsProject
 
             bull2.RenderTransform = tg;
             rt.BeginAnimation(RotateTransform.AngleProperty, rotate);
-            tt.BeginAnimation(TranslateTransform.XProperty, da2);
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.XProperty, TranslateX);
+            tt.BeginAnimation(TranslateTransform.YProperty, translateY);
         }
 
         private void AnimateSecondBull()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 60;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.900));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 60;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.900));
 
             TranslateTransform tt = new TranslateTransform();
             bull2.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationSecondBull = new DispatcherTimer();
             secondAnimationSecondBull.Tick += secondAnimationSecondBullStart;
@@ -520,15 +553,15 @@ namespace BullsCowsProject
 
         private void AnimateFirstBull()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 110;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(1.300));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 110;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(1.300));
 
             TranslateTransform tt = new TranslateTransform();
             bull.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
         }
 
         private void secondAnimationForthCowStart(object sender, EventArgs e)
@@ -550,11 +583,11 @@ namespace BullsCowsProject
 
             RotateTransform rt = new RotateTransform();
 
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = -2;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(1.000));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = -2;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(1.000));
 
             TranslateTransform tt = new TranslateTransform();
 
@@ -564,21 +597,21 @@ namespace BullsCowsProject
 
             cow4.RenderTransform = tg;
             rt.BeginAnimation(RotateTransform.AngleProperty, rotate);
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
         }
 
         private void AnimateForthCow()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 50;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 50;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
             cow4.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationForthCow = new DispatcherTimer();
             secondAnimationForthCow.Tick += secondAnimationForthCowStart;
@@ -611,15 +644,15 @@ namespace BullsCowsProject
 
         private void AnimateThirdCow()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 50;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 50;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
             cow3.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationThirdCow = new DispatcherTimer();
             secondAnimationThirdCow.Tick += secondAnimationThirdCowStart;
@@ -652,15 +685,15 @@ namespace BullsCowsProject
 
         private void AnimateSecondCow()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 37;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 37;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
             cow2.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationSecondCow = new DispatcherTimer();
             secondAnimationSecondCow.Tick += secondAnimationSecondCowStart;
@@ -693,15 +726,15 @@ namespace BullsCowsProject
 
         private void AnimateFirstCow()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 35;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 35;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
             cow.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationFirstCow = new DispatcherTimer();
             secondAnimationFirstCow.Tick += secondAnimationFirstCowStart;
@@ -734,16 +767,16 @@ namespace BullsCowsProject
 
         private void AnimateInputBox()
         {
-            DoubleAnimation drop = new DoubleAnimation();
-            drop.From = 0;
-            drop.To = 76;
-            drop.AutoReverse = false;
-            drop.Duration = new Duration(TimeSpan.FromSeconds(0.750));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 76;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.750));
 
             TranslateTransform tt = new TranslateTransform();
             inputTextBox.RenderTransform = tt;
 
-            tt.BeginAnimation(TranslateTransform.YProperty, drop);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
 
             DispatcherTimer secondAnimationInputBox = new DispatcherTimer();
             secondAnimationInputBox.Tick += secondAnimationInputBoxStart;
@@ -754,54 +787,54 @@ namespace BullsCowsProject
 
         private void AnimateRandomNumber()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 46;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.750));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 46;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.750));
 
             TranslateTransform tt = new TranslateTransform();
             randomNumLabel.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
         }
 
         private void AnimateCheckButton()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 68;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.750));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 68;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.750));
 
             TranslateTransform tt = new TranslateTransform();
             checkButton.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
         }
 
         private void AnimateHitoryLabel()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 20;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 20;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
             HistoryLabel.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
         }
 
         private void AnimateHistoryTab()
         {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = 0;
-            da.To = 10;
-            da.AutoReverse = false;
-            da.Duration = new Duration(TimeSpan.FromSeconds(0.500));
+            DoubleAnimation translate = new DoubleAnimation();
+            translate.From = 0;
+            translate.To = 10;
+            translate.AutoReverse = false;
+            translate.Duration = new Duration(TimeSpan.FromSeconds(0.500));
 
             TranslateTransform tt = new TranslateTransform();
             historyListBox.RenderTransform = tt;
-            tt.BeginAnimation(TranslateTransform.YProperty, da);
+            tt.BeginAnimation(TranslateTransform.YProperty, translate);
         }
     }
 }

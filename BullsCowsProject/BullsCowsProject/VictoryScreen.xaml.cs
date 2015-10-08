@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace BullsCowsProject
@@ -7,8 +9,17 @@ namespace BullsCowsProject
 
     public partial class VictoryScreen : Window
     {
-        internal MainWindow creatingForm;
+        internal MainWindow creatingForm { get; set; }
         public int moves;
+
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         public VictoryScreen()
         {
@@ -19,12 +30,21 @@ namespace BullsCowsProject
         {
             this.moves = moves;
             InitializeComponent();
+            Loaded += VictoryScreen_Loaded;
+        }
+
+        private void VictoryScreen_Loaded(object sender, RoutedEventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+
             SetMedal();
         }
 
         private void SetMedal()
         {
             var uri = new Uri("pack://application:,,,/Resources/bronze.png");
+
             if (moves == 1)
             {
                 uri = new Uri("pack://application:,,,/Resources/lucky.png");
@@ -37,19 +57,11 @@ namespace BullsCowsProject
             {
                 uri = new Uri("pack://application:,,,/Resources/silver.png");
             }
+
             MedalImage.Source = new BitmapImage(uri);
         }
 
-
-
-        //setting the parent window that we can control from this window
-        public MainWindow setCreatingForm
-        {
-            get { return creatingForm; }
-            set { creatingForm = value; }
-        }
-
-        //Starting new game ->
+        // Starting new game ->
         private void newGameButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow newGame = new MainWindow();
@@ -58,7 +70,7 @@ namespace BullsCowsProject
             this.Close();
         }
 
-        //closing the game
+        // Closing the game
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();

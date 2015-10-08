@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BullsCowsProject"
         mc:Ignorable="d"
-        Title="VictoryScreen" Height="151.579" Width="363.369" ResizeMode="NoResize" Icon="Resources/icon.png">
+        Title="You won!" Height="151.579" Width="363.369" ResizeMode="NoResize" Icon="Resources/icon.png" ShowInTaskbar="False" BorderBrush="Black">
     <Grid Background="#FF20C5CD">
-        <Label x:Name="label" Content="Victory" HorizontalAlignment="Left" Margin="15,9,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="SketchFlow Print" FontWeight="Bold"/>
-        <Button x:Name="newGameButton" Content="New Game" HorizontalAlignment="Left" Margin="15,0,0,13" Width="85" Click="newGameButton_Click" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="12" Background="#FFDA3728" Height="20" VerticalAlignment="Bottom"/>
-        <Button x:Name="exitButton" Content="Exit" HorizontalAlignment="Left" Margin="112,0,0,13" Width="85" Click="exitButton_Click" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="12" Background="#FFDA3728" Height="20" VerticalAlignment="Bottom"/>
+        <Label x:Name="label" Content="Victory" HorizontalAlignment="Left" Margin="15,14,0,0" VerticalAlignment="Top" FontSize="48" FontFamily="SketchFlow Print" FontWeight="Bold"/>
+        <Button x:Name="newGameButton" Content="New Game" HorizontalAlignment="Left" Margin="16,0,0,20" Width="85" Click="newGameButton_Click" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="12" Background="#FFDA3728" Height="20" VerticalAlignment="Bottom"/>
+        <Button x:Name="exitButton" Content="Exit" HorizontalAlignment="Left" Margin="113,0,0,20" Width="85" Click="exitButton_Click" FontFamily="ScetchFlow Print" FontWeight="Medium" FontSize="12" Background="#FFDA3728" Height="20" VerticalAlignment="Bottom"/>
         <Image x:Name="MedalImage" HorizontalAlignment="Left" Margin="231,14,0,20" Width="100"/>
 
     </Grid>

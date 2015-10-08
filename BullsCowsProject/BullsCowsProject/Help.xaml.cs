@@ -7,13 +7,7 @@ namespace BullsCowsProject
 {
     public partial class Help : Window
     {
-        internal MainWindow creatingForm;
-
-        public MainWindow setCreatingForm
-        {
-            get { return creatingForm; }
-            set { creatingForm = value; }
-        }
+        internal MainWindow creatingForm { get; set; }
 
         public Help()
         {
@@ -28,11 +22,13 @@ namespace BullsCowsProject
                 {
                     DialogResult = true;
                     this.Close();
+                    creatingForm.HelpButton.IsEnabled = false;
                     creatingForm.TimerStart();
                     creatingForm.inputTextBox.Focus();
                 }
             }
         }
+
         private void RulesLabel_Activate(object sender, MouseButtonEventArgs e)
         {
             var uri = new Uri("pack://application:,,,/Resources/mark.png");
